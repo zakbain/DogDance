@@ -22,28 +22,14 @@ public class PetBrain implements Brain {
 	 */
 	private List<Node<Thought>> popularThoughts;
 
-	/**
-	 * Helper to write logs.
-	 * 
-	 * @note 8-7: most likely will be removed to fix vulnerability of having
-	 *       open log
-	 */
-	private WritingHelper logWriter;
-
 	public PetBrain(String logFileName) {
 		// Initialize member variables
 		allThoughts = new LinkedList<Node<Thought>>();
 		popularThoughts = new ArrayList<Node<Thought>>();
-		logWriter = new WritingHelper(logFileName);
 	}
 
 	@Override
 	public void startThoughtProcess(Node<Thought> startThought, Heart heart, int desiredThoughtCount) {
-		logWriter.startWriting();
-
-		// Log the thought we started thinking about
-		logWriter.writeLine("NEW THOUGHT PROCESS: " + startThought.getValue().getDescription());
-
 		// Remember current thought for traversing below
 		Node<Thought> currentThought = startThought;
 
@@ -58,12 +44,10 @@ public class PetBrain implements Brain {
 				remainingThoughtCount = 0;
 			} else {
 				// If we found a connected thought, log it and continue
-				logWriter.write("\t" + currentThought.getValue().getDescription());
 				remainingThoughtCount--;
 			}
 		}
 
-		logWriter.stopWriting();
 	}
 
 	/**
@@ -99,19 +83,10 @@ public class PetBrain implements Brain {
 
 	@Override
 	public void saveThought(Node<Thought> thought) {
-		logWriter.startWriting();
-
-		// let em know we're in the brain
-		logWriter.writeLine("Brain: " + thought.getValue().getDescription());
-
-		// Add to all thoughts and report
-		logWriter.writeLine("\t Added to all thoughts.");
 		allThoughts.add(thought);
 
 		// Always add to popular thoughts and report
 		popularThoughts.add(thought);
-		logWriter.writeLine("\t Added to popular thoughts.");
-		logWriter.stopWriting();
 	}
 
 	@Override

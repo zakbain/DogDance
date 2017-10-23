@@ -28,6 +28,7 @@ public class PlayDogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_dog);
 
+        buildADog();
         getHappyBar();
         getCertainBar();
         coordinatePetBtn();
@@ -70,26 +71,33 @@ public class PlayDogActivity extends AppCompatActivity {
         });
     }
 
+    private void updateProgressBars() {
+        int happyProg = happyProgress.getProgress();
+        int certProg = certainProgress.getProgress();
+
+        happyProg = (int) (andy.getHeart().getEmotions().get(0).getDegree() * 100);
+        certProg = (int) (andy.getHeart().getEmotions().get(1).getDegree() * 100);
+        happyProgress.setProgress(happyProg);
+        certainProgress.setProgress(certProg);
+    }
+
     private void petDog() {
         andy.process(new Thought("Pet " + petCount));
+        petCount++;
+
+        updateProgressBars();
 
 //        happiness += 0.1 * (1.0 - happiness);
 //        certainty += 0.1 * (1.0 - certainty);
 
-//        int currProg = happyProgress.getProgress();
-//        currProg += 20;
-        happyProgress.setProgress(currProg);
     }
 
     private void scoldDog() {
-        andy.process(new Thought("Pet " + scoldCount));
+        andy.process(new Thought("Scold " + scoldCount));
+        scoldCount++;
 
+        updateProgressBars();
 //        happiness -= 0.1 * (happiness);
 //        certainty -= 0.1 * (certainty);
-
-
-        int currProg = certainProgress.getProgress();
-        currProg += 20;
-        this.certainProgress.setProgress(currProg);
     }
 }

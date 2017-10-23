@@ -1,5 +1,8 @@
 package emotions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import anatomy.Signal;
 import anatomy.SignalType;
 import consciousness.Thought;
@@ -24,13 +27,7 @@ public class PetHeart implements Heart {
 	 */
 	private Emotion certainty;
 
-	/**
-	 * Helper to write logs.
-	 * 
-	 * @note 8-7: most likely will be removed to fix vulnerability of having
-	 *       open log
-	 */
-	private WritingHelper logWriter;
+	private List<Emotion> emotions;
 
 	/**
 	 * Default constructor for the pet heart.
@@ -38,7 +35,10 @@ public class PetHeart implements Heart {
 	public PetHeart(String logFileName) {
 		this.happiness = new Emotion("Happiness");
 		this.certainty = new Emotion("Certainty");
-		logWriter = new WritingHelper(logFileName);
+
+		emotions = new ArrayList<Emotion>();
+		emotions.add(this.happiness);
+		emotions.add(this.certainty);
 	}
 
 	@Override
@@ -48,13 +48,6 @@ public class PetHeart implements Heart {
 
 	@Override
 	public void processThought(Thought thought) {
-		logWriter.startWriting();
-
-		// Print heart status before thought
-		logWriter.writeLine("Heart: " + thought.getDescription());
-		logWriter.writeLine("\tBefore Happiness: " + this.happiness.getDegree());
-		logWriter.writeLine("\tBefore Certainty: " + this.certainty.getDegree());
-
 		// Quite hardcoded. For now part 1 is the command
 		String[] descSplit = thought.getDescription().split(" ");
 		String command = descSplit[0];
@@ -76,28 +69,14 @@ public class PetHeart implements Heart {
 			double certDeg = 1.0 - this.certainty.getDegree();
 			this.certainty.increaseDegree(-1 * certDeg * BASE_INCREMENT);
 		}
-
-		// Print heart status after thought
-		logWriter.writeLine("Heart: " + thought.getDescription());
-		logWriter.writeLine("\tAfter Happiness: " + this.happiness.getDegree());
-		logWriter.writeLine("\tAfter Certainty: " + this.certainty.getDegree());
-		logWriter.stopWriting();
 	}
 
 	/**
 	 * Access happiness
-	 * @return
+	 *
+	 * @return Happiness
 	 */
-	private Emotion getHappiness() {
-		return happiness;
+	public List<Emotion> getEmotions() {
+		return emotions;
 	}
-
-	/**
-	 * Access certainty
-	 * @return
-	 */
-	private Emotion getCertainty() {
-		return certainty;
-	}
-
 }

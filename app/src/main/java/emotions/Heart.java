@@ -1,5 +1,7 @@
 package emotions;
 
+import java.util.List;
+
 import anatomy.BodyPart;
 import anatomy.Signal;
 import consciousness.Thought;
@@ -27,4 +29,11 @@ public interface Heart extends BodyPart {
 	 *            The thought to process
 	 */
 	public void processThought(Thought thought);
+
+	/**
+	 * Reprot the emotions being managed by this heart.
+	 * @return
+	 * 	List of emotions
+	 */
+	public List<Emotion> getEmotions();
 }
