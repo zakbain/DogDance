@@ -19,6 +19,7 @@ public class PlayDogActivity extends AppCompatActivity {
 
     private int petCount;
     private int scoldCount;
+    private int feedCount;
 
     private ProgressBar happyProgress;
     private ProgressBar certainProgress;
@@ -33,6 +34,7 @@ public class PlayDogActivity extends AppCompatActivity {
         getCertainBar();
         coordinatePetBtn();
         coordinateScoldBtn();
+        coordinateFeedBtn();
     }
 
     private void buildADog() {
@@ -71,6 +73,17 @@ public class PlayDogActivity extends AppCompatActivity {
         });
     }
 
+
+    private void coordinateFeedBtn() {
+        Button pet = (Button) findViewById(R.id.feedButton);
+        pet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                feedDog();
+            }
+        });
+    }
+
     private void updateProgressBars() {
         int happyProg = happyProgress.getProgress();
         int certProg = certainProgress.getProgress();
@@ -99,5 +112,12 @@ public class PlayDogActivity extends AppCompatActivity {
         updateProgressBars();
 //        happiness -= 0.1 * (happiness);
 //        certainty -= 0.1 * (certainty);
+    }
+
+    private void feedDog() {
+        andy.process(new Thought("Feed " + feedCount));
+        feedCount++;
+
+        updateProgressBars();
     }
 }
